@@ -1,0 +1,19 @@
+<project xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props">
+  <target name="setUp">
+    <propertyhelper>
+      <props:types />
+      <props:nested />
+    </propertyhelper>
+  </target>
+
+  <target name="testPath" depends="setUp">
+    <whichresource property="control" class="org.apache.tools.ant.Project"
+                   classpath="${java.class.path}" />
+    <whichresource property="test" class="org.apache.tools.ant.Project"
+                   classpath="${path:${java.class.path}}" />
+    <au:assertTrue>
+      <equals arg1="${control}" arg2="${test}" />
+    </au:assertTrue>
+  </target>
+</project>

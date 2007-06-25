@@ -1,0 +1,161 @@
+<project default="antunit" xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props">
+
+  <target name="antunit">
+    <au:antunit>
+      <fileset file="${ant.file}" />
+    </au:antunit>
+  </target>
+
+  <target name="setUp" unless="setUp">
+    <propertyhelper>
+      <props:stringops />
+    </propertyhelper>
+    <property name="setUp" value="true" />
+  </target>
+
+  <target name="testSubstring" depends="setUp">
+    <property name="testSubstring" value="testSubstring.value" />
+    <au:assertTrue>
+      <equals arg1="${testSubstring:14:5}" arg2="value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDefaultValue" depends="setUp">
+    <property name="testDefaultValue" value="testDefaultValue.value" />
+    <au:assertTrue>
+      <equals arg1="${testDefaultValue:-MISSING VALUE}" arg2="${testDefaultValue}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testDefaultValueUnset:-MISSING VALUE}" arg2="MISSING VALUE" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testSetDefaultValue" depends="setUp">
+    <property name="testSetDefaultValue" value="testSetDefaultValue.value" />
+    <au:assertTrue>
+      <equals arg1="${testSetDefaultValue:=MISSING VALUE}" arg2="${testSetDefaultValue}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testSetDefaultValueUnset:=MISSING VALUE}" arg2="MISSING VALUE" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testSetDefaultValueUnset}" arg2="MISSING VALUE" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testTranslate" depends="setUp">
+    <property name="testTranslate" value="anything" />
+    <echo>$${testTranslate:+Formatted Value}=${testTranslate:+Formatted Value}</echo>
+    <echo>$${testTranslateUnset:+Formatted Value}=${testTranslateUnset:+Formatted Value}</echo>
+    <au:assertTrue>
+      <equals arg1="${testTranslate:+Formatted Value}" arg2="Formatted Value" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testTranslateUnset:+Formatted Value}"
+              arg2="${testTranslateUnset:+Formatted Value}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testRequireProperty" depends="setUp">
+    <property name="testRequireProperty" value="testRequireProperty.value" />
+    <au:assertTrue>
+      <equals arg1="${testRequireProperty:?}" arg2="${testRequireProperty}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testRequireProperty:?ERROR MESSAGE}" arg2="${testRequireProperty}" />
+    </au:assertTrue>
+    <au:expectfailure expectedMessage="Missing required property testRequirePropertyUnset">
+      <echo>${testRequirePropertyUnset:?}</echo>
+    </au:expectfailure>
+    <au:expectfailure expectedMessage="ERROR MESSAGE">
+      <echo>${testRequirePropertyUnset:?ERROR MESSAGE}</echo>
+    </au:expectfailure>
+  </target>
+
+  <target name="setUpDelete" depends="setUp">
+    <property name="testDeletePart" value="foo/bar/baz.ext" />
+    <echo level="debug">$${testDeletePart}=${testDeletePart}</echo>
+  </target>
+
+  <target name="testDeleteFromStartGreedy" depends="setUpDelete">
+    <echo level="debug">$${testDeletePart##*/}=${testDeletePart##*/}</echo>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart##*/}" arg2="baz.ext" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDeleteFromStartReluctant" depends="setUpDelete">
+    <au:assertTrue>
+      <equals arg1="${testDeletePart#*.}" arg2="ext" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart#*/}" arg2="bar/baz.ext" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDeleteFromEndGreedy" depends="setUpDelete">
+    <echo level="debug">$${testDeletePart%%/*}=${testDeletePart%%/*}</echo>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart%%/*}" arg2="foo" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDeleteFromEndReluctant" depends="setUpDelete">
+    <echo level="debug">$${testDeletePart%/*}=${testDeletePart%/*}</echo>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart%/*}" arg2="foo/bar" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDeleteExtension" depends="setUpDelete">
+    <echo level="debug">$${testDeletePart%.*}=${testDeletePart%.*}</echo>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart%.*}" arg2="foo/bar/baz" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testRetainExtension" depends="setUpDelete">
+    <echo level="debug">$${testDeletePart##*.}=${testDeletePart##*.}</echo>
+    <au:assertTrue>
+      <equals arg1="${testDeletePart##*.}" arg2="ext" />
+    </au:assertTrue>
+  </target>
+
+  <target name="setUpReplace" depends="setUp">
+    <property name="testReplace" value="xoxoxoxoxox" />
+  </target>
+
+  <target name="testReplaceFirst" depends="setUpReplace">
+    <echo level="debug">$${testReplace/xox/-}=${testReplace/xox/-}</echo>
+    <au:assertTrue>
+      <equals arg1="${testReplace/xox/-}" arg2="-oxoxoxox" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testReplaceAll" depends="setUpReplace">
+    <echo level="debug">$${testReplace//xox/-}=${testReplace//xox/-}</echo>
+    <au:assertTrue>
+      <equals arg1="${testReplace//xox/-}" arg2="-o-o-" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testPackageMapping" depends="setUp">
+    <property name="path" value="org/apache/ant/props" />
+    <echo level="debug">$${path}=${path}</echo>
+    <echo level="debug">$${path//\//.}=${path//\//.}</echo>
+    <au:assertTrue>
+      <equals arg1="${path//\//.}" arg2="org.apache.ant.props" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testBackslashPackageMapping" depends="setUp">
+    <property name="backpath" value="org\apache\ant\props" />
+    <echo level="debug">$${backpath}=${backpath}</echo>
+    <echo level="debug">$${backpath//\//.}=${backpath//\//.}</echo>
+    <au:assertTrue>
+      <equals arg1="${backpath//\//.}" arg2="org.apache.ant.props" />
+    </au:assertTrue>
+  </target>
+
+</project>

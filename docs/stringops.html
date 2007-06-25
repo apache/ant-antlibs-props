@@ -1,0 +1,106 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<html>
+  <head>
+    <meta http-equiv="Content-Language" content="en-us"></meta>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>stringops evaluator</title>
+  </head>
+
+  <body>
+    <h2><a name="stringops">stringops</a></h2>
+
+    <h3>Description</h3>
+
+    <p>Implements *nix shell-inspired string ops.</p>
+
+    <h3>Simple operations</h3>
+
+    <p>Substring property foo from index <em>start</em> for length <em>len</em>:</p>
+    <pre>${foo:<em>start</em>:<em>len</em>}</pre>
+
+    <p>Evaluate to "defaultfoo" if foo not set:</p>
+    <pre>${foo:-defaultfoo}</pre>
+
+    <p>Default unset property foo to "defaultfoo" and return:</p>
+    <pre>${foo:=defaultfoo}</pre>
+
+    <p>Fail build if property foo unset:</p>
+    <pre>${foo:?defaultfoo}</pre>
+
+    <p>Evaluate to "if-foo" if property foo set:</p>
+    <pre>${foo:+if-foo}</pre>
+
+    <hr />
+    <h3>Delete/Replace</h3>
+
+    <p>The patterns used for deletion and replacement are *nix-style; i.e. Ant
+       patternset syntax without ** support. File separators are transparently merged.
+       Characters used in the expressions themselves can be specified by backslash escaping.
+    </p>
+
+    <p>Delete shortest leading match:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x#*/} &lt;!-- yields bar/baz.ext --&gt;
+    </pre>
+
+    <p>Delete longest leading match:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x##*/} &lt;!-- yields baz.ext --&gt;
+    </pre>
+
+    <p>Delete shortest trailing match:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x%%/*} &lt;!-- yields foo/bar --&gt;
+    </pre>
+
+    <p>Delete longest trailing match:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x%%/*} &lt;!-- yields foo --&gt;
+    </pre>
+
+    <p>Delete extension:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x%%.*} &lt;!-- yields foo/bar/baz --&gt;
+    </pre>
+
+    <p>Extract extension:</p>
+    <pre>
+      &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
+      ${x##*.} &lt;!-- yields .ext --&gt;
+    </pre>
+
+    <p>Replace first occurrence of a pattern:</p>
+    <pre>
+      &lt;!-- given ${path}=org/apache/ant/props --&gt;
+      ${path/\//.} &lt;!-- yields org.apache/ant/props --&gt;
+    </pre>
+
+    <p>Replace all occurrences of a pattern:</p>
+    <pre>
+      &lt;!-- given ${path}=org/apache/ant/props --&gt;
+      ${path//\//.} &lt;!-- yields org.apache.ant.props --&gt;
+    </pre>
+
+    <hr />
+  </body>
+</html>

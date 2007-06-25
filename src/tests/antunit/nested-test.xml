@@ -1,0 +1,67 @@
+<project default="antunit" xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props">
+
+  <target name="antunit">
+    <au:antunit>
+      <fileset file="${ant.file}" />
+    </au:antunit>
+  </target>
+
+  <target name="setUp">
+    <propertyhelper>
+      <props:nested />
+    </propertyhelper>
+  </target>
+
+  <target name="testNonNested" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <au:assertTrue>
+      <equals arg1="${foo}" arg2="foo.value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testNested" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <property name="var" value="foo" />
+    <au:assertTrue>
+      <equals arg1="${${var}}" arg2="foo.value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testMultiNested" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <property name="var1" value="f" />
+    <property name="var2" value="oo" />
+    <au:assertTrue>
+      <equals arg1="${${var1}${var2}}" arg2="foo.value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testDoubleNested" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <property name="var" value="foo" />
+    <property name="var.var" value="var" />
+    <au:assertTrue>
+      <equals arg1="${${${var.var}}}" arg2="foo.value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testMixedNested" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <property name="var" value="f" />
+    <property name="var.var" value="v" />
+    <au:assertTrue>
+      <equals arg1="${${${var.var}ar}oo}" arg2="foo.value" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testUnbalanced" depends="setUp">
+    <property name="foo" value="foo.value" />
+    <property name="var" value="foo" />
+    <property name="var.var" value="var" />
+    <au:assertTrue>
+      <equals arg1="${${${var.var}}" arg2="${${${var.var}}" />
+    </au:assertTrue>
+  </target>
+
+</project>
