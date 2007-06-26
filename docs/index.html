@@ -47,58 +47,47 @@
     <p>There are several ways to use the tasks:</p>
 
     <ul>
-      <li>The traditional way:
+      <li><p>The traditional way:
         <pre>
-          &lt;taskdef 
-            resource="org/apache/ant/props/antlib.xml"&gt;
-            &lt;classpath&gt;
-              &lt;pathelement location="YOUR-PATH-TO/ant-props.jar"/&gt;
-            &lt;/classpath&gt;
-          &lt;/taskdef&gt;
+          &lt;typedef resource="org/apache/ant/props/antlib.xml"
+                   classpath="YOUR-PATH-TO/ant-props.jar"/&gt;
         </pre>
 
-        Using this approach the provided extensions will live in the default namespace.
+        Using this approach the provided extensions will live in the default namespace.</p>
       </li>
 
-      <li>Similar, but assigning a namespace URI
+      <li><p>Similar, but assigning a namespace URI
         <pre>
           &lt;typedef uri="antlib:org.apache.ant.props"
-            resource="org/apache/ant/props/antlib.xml"&gt;
-            &lt;classpath&gt;
-              &lt;pathelement location="YOUR-PATH-TO/ant-props.jar"/&gt;
-            &lt;/classpath&gt;
-          &lt;/taskdef&gt;
+                   resource="org/apache/ant/props/antlib.xml"
+                   classpath="YOUR-PATH-TO/ant-props.jar"/&gt;
         </pre>
 
         Placing the properties extensions into their own namespace, usable e.g.:
 
         <pre>
-          &lt;project
-            xmlns:props="antlib:org.apache.ant.props"
-            xmlns="antlib:org.apache.tools.ant"&gt;
+          &lt;project xmlns:props="antlib:org.apache.ant.props"&gt;
             ...
             &lt;propertyhelper&gt;
               &lt;props:nested /&gt;
             &lt;/propertyhelper&gt;
         </pre>
 
-        or a variation thereof.
+        or a variation thereof.</p>
       </li>
 
-      <li>Using Ant's autodiscovery.  Place <code>ant-props.jar</code>
+      <li><p>Using Ant's autodiscovery.  Place <code>ant-props.jar</code>
       into a directory and use <code>ant -lib
       DIR-CONTAINING-THE-JAR</code> or copy it into
       <code>ANT_HOME/lib</code> - and then in your build file, simply
       declare the namespace on the <code>project</code> tag:
 
         <pre>
-          &lt;project
-            xmlns:props="antlib:org.apache.ant.props"&gt;
+          &lt;project xmlns:props="antlib:org.apache.ant.props"&gt;
         </pre>
 
         And all tasks of this library will automatically be available
-        in the <code>props</code> namespace without any
-        <code>taskdef</code>.
+        in the <code>props</code> namespace without any <code>typedef</code>.</p>
       </li>
     </ul>
 
@@ -106,12 +95,16 @@
 
     <p>The types provided are (so far) instances of
        <code>org.apache.tools.ant.PropertyHelper.Delegate</code> and can be invoked
-       using the &lt;propertyhelper&gt; task provided at the referenced Bugzilla entry:</a>
+       using the <code>&lt;propertyhelper&gt;</code> task provided at the referenced Bugzilla entry:    </p>
 
     <ul>
-      <li>nested - Implements evaluation of nested Ant properties e.g. ${${double-expand-me}}.</li>
-      <li><a href="stringops.html">stringops</a> - Implements *nix shell-inspired string ops.</li>
-      <li>refs - Given <code>ref:<em>refid</em></code>, expands to reference <em>refid</em>.</li>
+      <li>nested - Implements nested property expansion; e.g. <code>${${double-expand-me}}</code>.
+      </li>
+      <li><a href="stringops.html">stringops</a> - Implements *nix shell-inspired string operations.
+      </li>
+      <li>refs - Given <code>ref:<em>refid</em></code>, resolves reference
+          <code><em>refid</em></code>.
+      </li>
       <li>types - Given <code><em>type:arg</em></code>, attempts to invoke
           <code><em>type</em></code> constructor <code>(<em>project, arg</em>)</code>,
           then <code>(<em>arg</em>)</code>.
