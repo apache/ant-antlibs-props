@@ -77,13 +77,13 @@
       ${x%%/*} &lt;!-- yields foo --&gt;
     </pre>
 
-    <p>Delete extension:</p>
+    <p>Delete extension (using delete shortest trailing match):</p>
     <pre>
       &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
-      ${x%%.*} &lt;!-- yields foo/bar/baz --&gt;
+      ${x%.*} &lt;!-- yields foo/bar/baz --&gt;
     </pre>
 
-    <p>Extract extension:</p>
+    <p>Extract extension (using delete longest leading match):</p>
     <pre>
       &lt;!-- given ${x}=foo/bar/baz.ext --&gt;
       ${x##*.} &lt;!-- yields .ext --&gt;
