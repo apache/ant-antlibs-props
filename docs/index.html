@@ -93,24 +93,40 @@
 
     <h2>Tasks and Types</h2>
 
-    <p>The types provided are (so far) instances of
+    <p>The types provided are instances of
        <code>org.apache.tools.ant.PropertyHelper.Delegate</code> and can be invoked
        using the <code>&lt;propertyhelper&gt;</code> task provided at the referenced Bugzilla entry:    </p>
 
-    <ul>
-      <li>nested - Implements nested property expansion; e.g. <code>${${double-expand-me}}</code>.
-      </li>
-      <li><a href="stringops.html">stringops</a> - Implements *nix shell-inspired string operations.
-      </li>
-      <li>refs - Given <code>ref:<em>refid</em></code>, resolves reference
-          <code><em>refid</em></code>.
-      </li>
-      <li>types - Given <code><em>type</em>:<em>arg</em></code>, attempts to invoke
-          <code><em>type</em></code> constructor <code>(<em>project, arg</em>)</code>,
-          then <code>(<em>arg</em>)</code>.
-      </li>
-    </ul>
-
+    <table border="1" cellspacing="0" cellpadding="2" width="100%">
+      <tr>
+        <th>Delegate</th>
+        <th>Delegate Type</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td align="center">nested</td>
+        <td align="center">PropertyExpander</td>
+        <td>Implements nested property expansion; e.g. <code>${${double-expand-me}}</code>.</td>
+      </tr>
+      <tr>
+        <td align="center"><a href="stringops.html">stringops</a></td>
+        <td align="center">PropertyEvaluator</td>
+        <td>Implements *nix shell-inspired string operations.</td>
+      </tr>
+      <tr>
+        <td align="center">refs</td>
+        <td align="center">PropertyEvaluator</td>
+        <td>Given <code>ref:<em>refid</em></code>,
+            resolves reference <code><em>refid</em></code>.</td>
+      </tr>
+      <tr>
+        <td align="center">types</td>
+        <td align="center">PropertyEvaluator</td>
+        <td>Given <code><em>type</em>:<em>arg</em></code>, attempts to invoke
+            <code><em>type</em></code> constructor <code>(<em>project, arg</em>)</code>,
+            then <code>(<em>arg</em>)</code>.</td>
+      </tr>
+    </table>
     <hr/>
   </body>
 </html>
