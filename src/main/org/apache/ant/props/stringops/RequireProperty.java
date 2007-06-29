@@ -19,24 +19,25 @@
  */
 package org.apache.ant.props.stringops;
 
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
  * Require property operation.
  */
-public class RequireProperty extends StringOperation {
+public class RequireProperty extends RegexBasedEvaluator {
     private static final String DEFAULT_MESSAGE = "Missing required property ";
 
     /**
      * Construct a new RequireProperty operation.
      */
     public RequireProperty() {
-        super("^(.*):\\?(.*)?$");
+        super("^(.*):\\?(.*)$");
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         String result = (String) propertyHelper.getProperty(groups[1]);
         if (result == null) {
             String message = "".equals(groups[2]) ? DEFAULT_MESSAGE + groups[1] : groups[2];

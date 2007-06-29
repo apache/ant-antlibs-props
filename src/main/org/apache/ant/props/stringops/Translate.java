@@ -19,12 +19,13 @@
  */
 package org.apache.ant.props.stringops;
 
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
  * Translate operation.
  */
-public class Translate extends StringOperation {
+public class Translate extends RegexBasedEvaluator {
 
     /**
      * Construct a new Translate operation.
@@ -34,7 +35,7 @@ public class Translate extends StringOperation {
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         return propertyHelper.getProperty(groups[1]) == null ? null : groups[2];
     }
 }

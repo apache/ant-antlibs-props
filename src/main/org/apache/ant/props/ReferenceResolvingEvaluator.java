@@ -22,21 +22,26 @@ package org.apache.ant.props;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
- * Name says it all, doesn't it?
+ * PropertyEvaluator that resolves a reference against the current project.
  */
-public class ReferenceResolvingEvaluator implements PropertyHelper.PropertyEvaluator {
+public class ReferenceResolvingEvaluator extends StaticPrefixedEvaluator {
+    /** Default prefix */
+    public static final String DEFAULT_PREFIX = "ref";
+
+    /**
+     * Create a new ReferenceResolvingEvaluator.
+     */
+    public ReferenceResolvingEvaluator() {
+        super(DEFAULT_PREFIX);
+    }
 
     /**
      * {@inheritDoc}
-     * @see org.apache.tools.ant.PropertyHelper.PropertyEvaluator#evaluate(java.lang.String, org.apache.tools.ant.PropertyHelper)
+     * 
+     * @see org.apache.ant.props.PrefixedEvaluator#evaluatePrefixed(java.lang.String,
+     *      java.lang.String, org.apache.tools.ant.PropertyHelper)
      */
-    public Object evaluate(String property, PropertyHelper propertyHelper) {
-        if (property.startsWith("ref:")) {
-            Object o = propertyHelper.getProject().getReference(property.substring(4));
-            if (o != null) {
-                return o;
-            }
-        }
-        return null;
+    protected Object evaluate(String property, String prefix, PropertyHelper propertyHelper) {
+        return propertyHelper.getProject().getReference(property);
     }
 }

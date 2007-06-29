@@ -21,6 +21,7 @@ package org.apache.ant.props.stringops;
 
 import java.text.ParsePosition;
 
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.RegularExpression;
 import org.apache.tools.ant.util.regexp.Regexp;
@@ -28,7 +29,7 @@ import org.apache.tools.ant.util.regexp.Regexp;
 /**
  * Abstract pattern-based operation.
  */
-public abstract class PatternOperation extends StringOperation {
+public abstract class PatternOperation extends RegexBasedEvaluator {
     private interface PatternParser {
         boolean process(StringBuffer sb, ParsePosition pos);
     }

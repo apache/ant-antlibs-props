@@ -40,7 +40,7 @@ public abstract class DeletePartOperation extends PatternOperation {
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Object value = propertyHelper.getProperty(groups[1]);
         if (value != null) {
             String s = value.toString();

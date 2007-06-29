@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import org.apache.tools.ant.PropertyHelper;
+import org.apache.tools.ant.PropertyHelper.PropertyEvaluator;
 
 /**
  * PropertyEvaluator to apply *nix-style string operations to Ant properties.
@@ -41,7 +42,6 @@ public class StringOperationsEvaluator implements PropertyHelper.PropertyEvaluat
      * Construct a new StringOperationsEvaluator.
      */
     public StringOperationsEvaluator() {
-        //TODO: add delegates
         delegates.add(new Substring());
         delegates.add(new DefaultValue());
         delegates.add(new SetDefaultValue());
@@ -65,8 +65,8 @@ public class StringOperationsEvaluator implements PropertyHelper.PropertyEvaluat
         stk.push(propertyName);
         try {
             for (Iterator iter = delegates.iterator(); iter.hasNext();) {
-                Object value = ((StringOperation) iter.next()).evaluate(
-                        propertyName, propertyHelper);
+                Object value = ((PropertyEvaluator) iter.next()).evaluate(propertyName,
+                        propertyHelper);
                 if (value != null) {
                     return value;
                 }

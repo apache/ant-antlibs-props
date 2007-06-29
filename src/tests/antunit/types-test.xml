@@ -11,7 +11,7 @@
     <whichresource property="control" class="org.apache.tools.ant.Project"
                    classpath="${java.class.path}" />
     <whichresource property="test" class="org.apache.tools.ant.Project"
-                   classpath="${path:${java.class.path}}" />
+                   classpath="${path(${java.class.path})}" />
     <au:assertTrue>
       <equals arg1="${control}" arg2="${test}" />
     </au:assertTrue>

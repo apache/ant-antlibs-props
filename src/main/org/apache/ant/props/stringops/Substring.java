@@ -19,12 +19,13 @@
  */
 package org.apache.ant.props.stringops;
 
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
  * Substring operation.
  */
-public class Substring extends StringOperation {
+public class Substring extends RegexBasedEvaluator {
 
     /**
      * Construct a new substring operation.
@@ -34,7 +35,7 @@ public class Substring extends StringOperation {
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         String value = (String) propertyHelper.getProperty(groups[1]);
         if (value != null) {
             int start = Integer.parseInt(groups[2]);

@@ -19,22 +19,23 @@
  */
 package org.apache.ant.props.stringops;
 
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
  * DefaultValue operation.
  */
-public class DefaultValue extends StringOperation {
+public class DefaultValue extends RegexBasedEvaluator {
 
     /**
      * Construct a new DefaultValue operation.
      */
     public DefaultValue() {
-        super("^(.*):-(.*)$");
+        super("(.*):-(.*)");
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Object o = (String) propertyHelper.getProperty(groups[1]);
         return o == null ? groups[2] : o.toString();
     }

@@ -19,13 +19,13 @@
  */
 package org.apache.ant.props.stringops;
 
-import org.apache.tools.ant.Project;
+import org.apache.ant.props.RegexBasedEvaluator;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
  * SetDefaultValue operation.
  */
-public class SetDefaultValue extends StringOperation {
+public class SetDefaultValue extends RegexBasedEvaluator {
 
     /**
      * Construct a new SetDefaultValue operation.
@@ -35,16 +35,12 @@ public class SetDefaultValue extends StringOperation {
     }
 
     /** {@inheritDoc} */
-    protected String evaluate(String[] groups, PropertyHelper propertyHelper) {
-        Object o  = propertyHelper.getProperty(groups[1]);
-        propertyHelper.getProject().log(this + ": " + groups[1] + "=" + o, Project.MSG_DEBUG);
-        String value;
-        if (o == null) {
-            value = groups[2];
-            propertyHelper.setNewProperty(groups[1], value);
-        } else {
-        	value = o.toString();
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
+        Object result = propertyHelper.getProperty(groups[1]);
+        if (result == null) {
+            result = groups[2];
+            propertyHelper.setNewProperty(groups[1], result);
         }
-        return value;
+        return result;
     }
 }

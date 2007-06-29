@@ -23,7 +23,7 @@ import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.util.regexp.Regexp;
 
 /**
- * Abstract Replace operation.
+ * Replace operation--handles 'replace all' and 'replace first' alike.
  */
 public class ReplaceOperation extends PatternOperation {
     private static final String ESCAPE_SLASH = "\\\\/";
@@ -39,7 +39,7 @@ public class ReplaceOperation extends PatternOperation {
     }
 
     /** {@inheritDoc} */
-    protected final String evaluate(String[] groups, PropertyHelper propertyHelper) {
+    protected final Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Object value = propertyHelper.getProperty(groups[1]);
         int replaceOption = "//".equals(groups[2]) ? Regexp.REPLACE_ALL : Regexp.REPLACE_FIRST;
         StringBuffer sb = new StringBuffer(groups[3]);

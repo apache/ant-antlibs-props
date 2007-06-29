@@ -24,63 +24,48 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
- * Property evaluator that will map any colon-delimited currently defined Ant type
- * using its String constructor, if it has any.
+ * Property evaluator that will map any colon-delimited currently defined Ant type using its String
+ * constructor, if it has any.
  */
-public class ComponentTypeEvaluator implements PropertyHelper.PropertyEvaluator {
-    private static final String DEFAULT_DELIMITER = ":";
-
-    private static final Class[] PROJECT_STRING = new Class[] { Project.class,
-            String.class };
+public class ComponentTypeEvaluator extends RegexBasedEvaluator {
+    private static final Class[] PROJECT_STRING = new Class[] { Project.class, String.class };
 
     private static final Class[] STRING_ONLY = new Class[] { String.class };
 
-    private String delimiter;
+    /**
+     * Create a new ComponentTypeEvaluator.
+     */
+    public ComponentTypeEvaluator() {
+        setPattern("^(.*?)\\((.*)\\)$");
+    }
 
     /**
      * {@inheritDoc}
-     * @see org.apache.tools.ant.PropertyHelper.PropertyEvaluator#evaluate(java.lang.String, org.apache.tools.ant.PropertyHelper)
+     * 
+     * @see org.apache.ant.props.RegexBasedEvaluator#evaluate(java.lang.String[],
+     *      org.apache.tools.ant.PropertyHelper)
      */
-    public Object evaluate(String property, PropertyHelper propertyHelper) {
-        int d = property.indexOf(getDelimiter());
+    protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Object result = null;
-        if (d >= 0) {
-            Project p = propertyHelper.getProject();
-            Class componentType = ComponentHelper.getComponentHelper(p)
-                    .getDefinition(property.substring(0, d)).getTypeClass(p);
-            if (componentType != null) {
-                String stringArg = property.substring(d + 1);
-                try {
-                    result = componentType.getConstructor(PROJECT_STRING)
-                            .newInstance(new Object[] { p, stringArg });
-                } catch (Exception e) {
-                }
-                try {
-                    result = componentType.getConstructor(STRING_ONLY)
-                            .newInstance(new Object[] { stringArg });
-                } catch (Exception e) {
-                }
-                if (result != null) {
-                    p.setProjectReference(result);
-                }
+        Project p = propertyHelper.getProject();
+        Class componentType = ComponentHelper.getComponentHelper(p).getDefinition(groups[1])
+                .getTypeClass(p);
+        if (componentType != null) {
+            try {
+                result = componentType.getConstructor(PROJECT_STRING).newInstance(
+                        new Object[] { p, groups[2] });
+            } catch (Exception e) {
+            }
+            try {
+                result = componentType.getConstructor(STRING_ONLY).newInstance(
+                        new Object[] { groups[2] });
+            } catch (Exception e) {
+            }
+            if (result != null) {
+                p.setProjectReference(result);
             }
         }
         return result;
     }
 
-    /**
-     * Get the String delimiter.
-     * @return String
-     */
-    public String getDelimiter() {
-        return delimiter == null ? DEFAULT_DELIMITER : delimiter;
-    }
-
-    /**
-     * Set the String delimiter.
-     * @param delimiter String
-     */
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
 }
