@@ -24,8 +24,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
 
 /**
- * Property evaluator that will map any colon-delimited currently defined Ant type using its String
- * constructor, if it has any.
+ * Property evaluator that will map a currently defined Ant type using its String constructor, if it
+ * has any.  Default syntax is <code><em>type</em>(<em>arg</em>)</code>.
  */
 public class ComponentTypeEvaluator extends RegexBasedEvaluator {
     private static final Class[] PROJECT_STRING = new Class[] { Project.class, String.class };
