@@ -1,18 +1,32 @@
-<project xmlns:au="antlib:org.apache.ant.antunit"
+<project default="antunit" xmlns:au="antlib:org.apache.ant.antunit"
          xmlns:props="antlib:org.apache.ant.props">
   <target name="setUp">
     <propertyhelper>
       <props:refs />
+      <props:refs delimiter="," />
       <props:nested />
     </propertyhelper>
+    <path id="cp" path="${java.class.path}" />
   </target>
 
   <target name="testPath" depends="setUp">
-    <path id="cp" path="${java.class.path}" />
     <whichresource property="control" class="org.apache.tools.ant.Project" classpathref="cp" />
     <whichresource property="test" class="org.apache.tools.ant.Project" classpath="${ref:cp}" />
     <au:assertTrue>
       <equals arg1="${control}" arg2="${test}" />
     </au:assertTrue>
   </target>
+
+  <target name="testDelimiter" depends="setUp">
+    <au:assertTrue>
+      <equals arg1="${ref:cp}" arg2="${ref,cp}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="antunit">
+    <au:antunit>
+      <fileset file="${ant.file}" />
+    </au:antunit>
+  </target>
+
 </project>

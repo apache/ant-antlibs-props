@@ -84,7 +84,7 @@ public abstract class PrefixedEvaluator extends RegexBasedEvaluator {
         if (delimiter == null) {
             throw new IllegalArgumentException("invalid delimiter: null");
         }
-        super.setPattern("^(.*?):(.*)$");
+        super.setPattern("^(.*?)" + delimiter + "(.*)$");
     }
 
     /**
