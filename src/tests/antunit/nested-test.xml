@@ -81,4 +81,14 @@
     </au:assertTrue>
   </target>
 
+  <target name="testNestedDoubleDollar" depends="setUp">
+    <property name="$$" value="$$.value" />
+    <au:assertTrue>
+      <and>
+        <equals arg1="${$$}" arg2="$$.value" />
+        <equals arg1="${$$}" arg2="${$}" />
+      </and>
+    </au:assertTrue>
+  </target>
+
 </project>

@@ -51,6 +51,8 @@ public class NestedPropertyExpander implements PropertyExpander {
                 if (o != null) {
                     sb.append(o);
                 } else {
+                    // be aware that the parse position may now have changed; update:
+                    c = pos.getIndex();
                     sb.append(value.charAt(c));
                     pos.setIndex(c + 1);
                 }
