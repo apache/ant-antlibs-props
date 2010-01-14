@@ -92,36 +92,41 @@
     <h2>Tasks and Types</h2>
 
     <p>The types provided are instances of
-       <code>org.apache.tools.ant.PropertyHelper.Delegate</code> and can be invoked
-       using the <code>&lt;propertyhelper&gt;</code> task provided in the SVN trunk of Ant core:
+       <code>org.apache.tools.ant.PropertyHelper.Delegate</code> and can be invoked using the
+       <code>&lt;<a href="http://ant.apache.org/manual/CoreTasks/propertyhelper.html">propertyhelper</a>&gt;</code>
+       task provided in the SVN trunk of Ant core:
 
     <table border="1" cellspacing="0" cellpadding="2" width="100%">
       <tr>
-        <th>Delegate</th>
-        <th>Delegate Type</th>
-        <th>Description</th>
+        <th width="15%">Delegate</th>
+        <th width="15%">Delegate Type</th>
+        <th width="70%">Description</th>
       </tr>
       <tr>
+        <a name="nested" />
         <td align="center">nested</td>
         <td align="center">PropertyExpander</td>
         <td>Implements nested property expansion; e.g. <code>${${double-expand-me}}</code>.</td>
       </tr>
       <tr>
+        <a name="stringops" />
         <td align="center"><a href="stringops.html">stringops</a></td>
         <td align="center">PropertyEvaluator</td>
         <td>Implements *nix shell-inspired string operations.</td>
       </tr>
       <tr>
+        <a name="refs" />
         <td align="center">refs</td>
         <td align="center">PropertyEvaluator</td>
         <td>Given <code>ref:<em>refid</em></code>,
-            resolves reference <code><em>refid</em></code>.</td>
+            resolves Ant Project reference <code><em>refid</em></code>.</td>
       </tr>
       <tr>
+        <a name="types" />
         <td align="center">types</td>
         <td align="center">PropertyEvaluator</td>
         <td>Given <code><em>type</em>(<em>arg</em>)</code>, attempts to invoke
-            <code><em>type</em></code> constructor <code>(<em>project, arg</em>)</code>,
+            <code><em>type</em></code> constructor <code>(Project, <em>arg</em>)</code>,
             then <code>(<em>arg</em>)</code>.</td>
       </tr>
     </table>
