@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -15,27 +15,19 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<!DOCTYPE contributors
-[
-<!ELEMENT name (first?, middle?, last)>
-<!ELEMENT contributors (introduction, name+)>
-<!ELEMENT first (#PCDATA)>
-<!ELEMENT introduction (#PCDATA)>
-<!ELEMENT middle (#PCDATA)>
-<!ELEMENT last (#PCDATA)>
-]
->
+<project xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props">
+  <target name="setUp">
+    <propertyhelper>
+      <props:conditions />
+      <props:nested />
+    </propertyhelper>
+  </target>
 
-<contributors>
-  <introduction>
-  These are some of the many people who have helped with this Ant Library.
-  </introduction>
-  <name>
-    <first>Matt</first>
-    <last>Benson</last>
-  </name>
-  <name>
-    <first>Stefan</first>
-    <last>Bodewig</last>
-  </name>
-</contributors>
+  <target name="testAvailable">
+    <au:assertEquals expected="true"
+                     actual="${available(classname=org.apache.ant.props.ConditionEvaluator)}"/>
+    <au:assertEquals expected="false"
+                     actual="${available(classname=org.apache.ant.props.ConditionEvaluatorFoo)}"/>
+  </target>
+</project>

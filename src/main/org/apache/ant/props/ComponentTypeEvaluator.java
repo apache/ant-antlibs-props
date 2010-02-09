@@ -36,7 +36,7 @@ public class ComponentTypeEvaluator extends RegexBasedEvaluator {
      * Create a new ComponentTypeEvaluator.
      */
     public ComponentTypeEvaluator() {
-        setPattern("^(.*?)\\((.*)\\)$");
+        super("^(.*?)\\((.*)\\)$");
     }
 
     /**
