@@ -16,6 +16,7 @@
  */
 package org.apache.ant.props;
 
+import java.util.regex.Pattern;
 import org.apache.tools.ant.ComponentHelper;
 import org.apache.tools.ant.IntrospectionHelper;
 import org.apache.tools.ant.Project;
@@ -31,6 +32,9 @@ import org.apache.tools.ant.taskdefs.condition.Condition;
  * for example <code>os(family=unix)</code>.
  */
 public class ConditionEvaluator extends RegexBasedEvaluator {
+    private static final Pattern COMMA = Pattern.compile(",");
+    private static final Pattern EQ = Pattern.compile("=");
+
     public ConditionEvaluator() {
         super("^(.+?)\\(((?:(?:.+?)=(?:.+?))?(?:,(?:.+?)=(?:.+?))*?)\\)$");
     }
@@ -44,10 +48,11 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
             if (groups[2].length() > 0) {
                 IntrospectionHelper ih =
                     IntrospectionHelper.getHelper(instance.getClass());
-                String[] attributes = groups[2].split(",");
+                String[] attributes = COMMA.split(groups[2]);
                 for (int i = 0; i < attributes.length; i++) {
-                    String[] keyValue = attributes[i].split("=");
-                    ih.setAttribute(p, instance, keyValue[0], keyValue[1]);
+                    String[] keyValue = EQ.split(attributes[i]);
+                    ih.setAttribute(p, instance, keyValue[0].trim(),
+                                    keyValue[1].trim());
                 }
             }
             return Boolean.valueOf(cond.eval());

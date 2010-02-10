@@ -24,10 +24,41 @@
     </propertyhelper>
   </target>
 
-  <target name="testAvailable">
-    <au:assertEquals expected="true"
-                     actual="${available(classname=org.apache.ant.props.ConditionEvaluator)}"/>
-    <au:assertEquals expected="false"
-                     actual="${available(classname=org.apache.ant.props.ConditionEvaluatorFoo)}"/>
+  <target name="testAvailable"
+          depends="if-available,unless-available">
+    <au:assertLogContains text="true"/>
   </target>
+
+  <target name="if-available"
+          if="${available(classname=org.apache.ant.props.ConditionEvaluator)}">
+    <echo>true</echo>
+  </target>
+
+  <target name="unless-available"
+          unless="${available(classname=org.apache.ant.props.ConditionEvaluator)}">
+    <fail>org.apache.ant.props.ConditionEvaluator must be there</fail>
+  </target>
+
+  <target name="testTrueEquals" depends="set-prop,if-equals,unless-equals">
+    <au:assertLogContains text="equal"/>
+  </target>
+
+  <target name="set-prop">
+    <property name="foo" value="bar"/>
+  </target>
+
+  <target name="if-equals"
+          if="${equals(arg1=bar,arg2=${foo})}">
+    <echo>equal</echo>
+  </target>
+
+  <target name="unless-equals"
+          unless="${equals(arg1=bar,arg2=${foo})}">
+    <echo>not equal</echo>
+  </target>
+
+  <target name="testFalseEquals" depends="if-equals,unless-equals">
+    <au:assertLogContains text="not equal"/>
+  </target>
+
 </project>

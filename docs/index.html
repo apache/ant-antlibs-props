@@ -128,6 +128,18 @@
             then <code>(<em>arg</em>)</code>.</td>
       </tr>
       <tr>
+        <a name="conditions" />
+        <td align="center">types</td>
+        <td align="center">PropertyEvaluator</td>
+        <td>Given <code><em>condition</em>([<em>arg1=value1</em>,<em>arg2=value2</em>,...])</code>,
+            attempts to invoke an Ant condition of the given name
+            setting the given attibute values and evaluates to either
+            Boolean.TRUE or Boolean.FALSE.  Usage looks
+            like <em>${os(family=unix)}</em>.  This is probably most
+            useful together with the if/unless attributes of tasks or
+            targets.</td>
+      </tr>
+      <tr>
         <a name="encodeURL" />
         <td align="center">encodeURL</td>
         <td align="center">PropertyEvaluator</td>
