@@ -40,7 +40,7 @@
     <pre>${foo:=defaultfoo}</pre>
 
     <p>Fail build if property foo unset:</p>
-    <pre>${foo:?defaultfoo}</pre>
+    <pre>${foo:?optional error message}</pre>
 
     <p>Evaluate to "if-foo" if property foo set:</p>
     <pre>${foo:+if-foo}</pre>
