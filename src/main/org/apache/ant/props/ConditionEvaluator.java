@@ -16,11 +16,16 @@
  */
 package org.apache.ant.props;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import org.apache.tools.ant.AntTypeDefinition;
 import org.apache.tools.ant.ComponentHelper;
 import org.apache.tools.ant.IntrospectionHelper;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
+import org.apache.tools.ant.TypeAdapter;
 import org.apache.tools.ant.taskdefs.condition.Condition;
 
 /**
@@ -35,28 +40,62 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
     private static final Pattern COMMA = Pattern.compile(",");
     private static final Pattern EQ = Pattern.compile("=");
 
+    /**
+     * Create a new ConditionEvaluator instance.
+     */
     public ConditionEvaluator() {
         super("^(.+?)\\(((?:(?:.+?)=(?:.+?))?(?:,(?:.+?)=(?:.+?))*?)\\)$");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Project p = propertyHelper.getProject();
-        Object instance = ComponentHelper.getComponentHelper(p)
-            .createComponent(groups[1]);
-        if (instance instanceof Condition) {
-            Condition cond = (Condition) instance;
+        Condition cond = createCondition(p, groups[1]);
+        if (cond != null) {
             if (groups[2].length() > 0) {
-                IntrospectionHelper ih =
-                    IntrospectionHelper.getHelper(instance.getClass());
+                Object realObject = TypeAdapter.class.isInstance(cond) ? ((TypeAdapter) cond)
+                        .getProxy() : cond;
+                if (realObject == null) {
+                    throw new IllegalStateException(
+                            "Found null proxy object for adapted condition " + cond.toString());
+                }
+                IntrospectionHelper ih = IntrospectionHelper.getHelper(realObject.getClass());
                 String[] attributes = COMMA.split(groups[2]);
                 for (int i = 0; i < attributes.length; i++) {
                     String[] keyValue = EQ.split(attributes[i]);
-                    ih.setAttribute(p, instance, keyValue[0].trim(),
-                                    keyValue[1].trim());
+                    ih.setAttribute(p, realObject, keyValue[0].trim(), keyValue[1].trim());
                 }
             }
             return Boolean.valueOf(cond.eval());
         }
         return null;
     }
+
+    private Condition createCondition(Project project, String type) {
+        Condition result = null;
+        ComponentHelper componentHelper = ComponentHelper.getComponentHelper(project);
+        Object o = componentHelper.createComponent(type);
+        if (o instanceof Condition) {
+            result = (Condition) o;
+        } else {
+            List restrictedDefinitions = componentHelper.getRestrictedDefinitions(type);
+            for (Iterator iter = restrictedDefinitions.iterator(); iter.hasNext();) {
+                AntTypeDefinition typeDefinition = (AntTypeDefinition) iter.next();
+                Class exposedClass = typeDefinition.getExposedClass(project);
+                if (exposedClass != null && Condition.class.isAssignableFrom(exposedClass)) {
+                    try {
+                        result = (Condition) typeDefinition.create(project);
+                        break;
+                    } catch (Exception e) {
+                        project.log("Exception creating type " + typeDefinition, e,
+                                Project.MSG_WARN);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 }
