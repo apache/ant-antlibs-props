@@ -21,7 +21,6 @@ under the License.
   <typedef name="nested" classname="org.apache.ant.props.NestedPropertyExpander" />
   <typedef name="stringops" classname="org.apache.ant.props.stringops.StringOperationsEvaluator" />
   <typedef name="types" classname="org.apache.ant.props.ComponentTypeEvaluator" />
-  <typedef name="refs" classname="org.apache.ant.props.ReferenceResolvingEvaluator" />
   <typedef name="encodeURL" classname="org.apache.ant.props.EncodeURLEvaluator" />
   <typedef name="conditions" classname="org.apache.ant.props.ConditionEvaluator" />
 </antlib>
