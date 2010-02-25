@@ -44,7 +44,7 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
      * Create a new ConditionEvaluator instance.
      */
     public ConditionEvaluator() {
-        super("^(.+?)\\(((?:(?:.+?)=(?:.+?))?(?:,(?:.+?)=(?:.+?))*?)\\)$");
+        super("^(!)?(.+?)\\(((?:(?:.+?)=(?:.+?))?(?:,(?:.+?)=(?:.+?))*?)\\)$");
     }
 
     /**
@@ -52,9 +52,13 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
      */
     protected Object evaluate(String[] groups, PropertyHelper propertyHelper) {
         Project p = propertyHelper.getProject();
-        Condition cond = createCondition(p, groups[1]);
+        boolean negate = false;
+        if ("!".equals(groups[1])) {
+            negate = true;
+        }
+        Condition cond = createCondition(p, groups[2]);
         if (cond != null) {
-            if (groups[2].length() > 0) {
+            if (groups[3].length() > 0) {
                 Object realObject = TypeAdapter.class.isInstance(cond) ? ((TypeAdapter) cond)
                         .getProxy() : cond;
                 if (realObject == null) {
@@ -62,13 +66,13 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
                             "Found null proxy object for adapted condition " + cond.toString());
                 }
                 IntrospectionHelper ih = IntrospectionHelper.getHelper(realObject.getClass());
-                String[] attributes = COMMA.split(groups[2]);
+                String[] attributes = COMMA.split(groups[3]);
                 for (int i = 0; i < attributes.length; i++) {
                     String[] keyValue = EQ.split(attributes[i]);
                     ih.setAttribute(p, realObject, keyValue[0].trim(), keyValue[1].trim());
                 }
             }
-            return Boolean.valueOf(cond.eval());
+            return Boolean.valueOf(cond.eval() ^ negate);
         }
         return null;
     }

@@ -128,9 +128,10 @@
             attempts to invoke an Ant condition of the given name
             setting the given attibute values and evaluates to either
             Boolean.TRUE or Boolean.FALSE.  Usage looks
-            like <em>${os(family=unix)}</em>.  This is probably most
-            useful together with the if/unless attributes of tasks or
-            targets.</td>
+            like <em>${os(family=unix)}</em> / <em>${!os(family=unix)}</em>.
+            This is probably most useful together with the
+            <code>if</code>/<code>unless</code> attributes of tasks or targets.
+        </td>
       </tr>
       <tr>
         <a name="encodeURL" />

@@ -99,4 +99,11 @@
     </antunit>
   </target>
 
+  <target name="testNegation">
+    <property name="foo" value="false" />
+    <au:assertTrue>
+      <istrue value="${!istrue(value=${foo})}" />
+    </au:assertTrue>
+  </target>
+
 </project>
