@@ -80,6 +80,18 @@
     </au:assertTrue>
   </target>
 
+  <target name="testIsTrue" depends="set-prop">
+    <au:assertTrue>
+      <istrue value="${equals(arg1=bar,arg2=${foo})}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testNotIsTrue" description="Pass is inconclusive">
+    <au:assertFalse>
+      <istrue value="${equals(arg1=bar,arg2=${foo})}" />
+    </au:assertFalse>
+  </target>
+
   <target name="antunit">
     <antunit xmlns="antlib:org.apache.ant.antunit">
       <plainlistener />
