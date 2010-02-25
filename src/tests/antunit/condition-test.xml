@@ -16,49 +16,75 @@
    limitations under the License.
 -->
 <project xmlns:au="antlib:org.apache.ant.antunit"
-         xmlns:props="antlib:org.apache.ant.props">
-  <target name="setUp">
-    <propertyhelper>
-      <props:conditions />
-      <props:nested />
-    </propertyhelper>
-  </target>
-
-  <target name="testAvailable"
-          depends="if-available,unless-available">
-    <au:assertLogContains text="true"/>
-  </target>
+         xmlns:props="antlib:org.apache.ant.props" default="antunit">
+  <propertyhelper>
+    <props:conditions />
+    <props:nested />
+  </propertyhelper>
 
   <target name="if-available"
           if="${available(classname=org.apache.ant.props.ConditionEvaluator)}">
-    <echo>true</echo>
+    <property name="testAvailable.pass" value="true" />
   </target>
 
   <target name="unless-available"
           unless="${available(classname=org.apache.ant.props.ConditionEvaluator)}">
-    <fail>org.apache.ant.props.ConditionEvaluator must be there</fail>
+    <property name="testAvailable.fail" value="true" />
   </target>
 
-  <target name="testTrueEquals" depends="set-prop,if-equals,unless-equals">
-    <au:assertLogContains text="equal"/>
+  <target name="testAvailable" depends="if-available,unless-available">
+    <au:assertTrue>
+      <and>
+        <istrue value="${testAvailable.pass}" />
+        <not><istrue value="${testAvailable.fail}" /></not>
+      </and>
+    </au:assertTrue>
   </target>
 
   <target name="set-prop">
     <property name="foo" value="bar"/>
   </target>
 
-  <target name="if-equals"
-          if="${equals(arg1=bar,arg2=${foo})}">
-    <echo>equal</echo>
+  <target name="if-equals" if="${equals(arg1=bar,arg2=${foo})}">
+    <property name="testTrueEquals.pass" value="true" />
   </target>
 
-  <target name="unless-equals"
-          unless="${equals(arg1=bar,arg2=${foo})}">
-    <echo>not equal</echo>
+  <target name="unless-equals" unless="${equals(arg1=bar,arg2=${foo})}">
+    <property name="testFalseEquals.pass" value="true" />
   </target>
 
-  <target name="testFalseEquals" depends="if-equals,unless-equals">
-    <au:assertLogContains text="not equal"/>
+  <target name="testTrueEquals" depends="set-prop,if-equals,unless-equals">
+    <au:assertTrue>
+      <istrue value="${testTrueEquals.pass}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testFalseEquals" depends="if-equals,unless-equals"
+          description="Pass is inconclusive">
+    <au:assertTrue>
+      <istrue value="${testFalseEquals.pass}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testEvalToTextFalse">
+    <au:assertTrue>
+      <!-- equals takes objects; embedding values in () forces string conversion -->
+      <equals arg1="(false)" arg2="(${equals(arg1=bar,arg2=${foo})})" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testEvalToTextTrue" depends="set-prop">
+    <au:assertTrue>
+      <!-- equals takes objects; embedding values in () forces string conversion -->
+      <equals arg1="(true)" arg2="(${equals(arg1=bar,arg2=${foo})})" />
+    </au:assertTrue>
+  </target>
+
+  <target name="antunit">
+    <antunit xmlns="antlib:org.apache.ant.antunit">
+      <plainlistener />
+      <file file="${ant.file}" xmlns="antlib:org.apache.tools.ant" />
+    </antunit>
   </target>
 
 </project>
