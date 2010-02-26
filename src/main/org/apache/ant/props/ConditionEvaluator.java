@@ -40,25 +40,28 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
     private static final Pattern COMMA = Pattern.compile(",");
     private static final Pattern EQ = Pattern.compile("=");
 
-    private static final String PATTERN = "^" // beginning
-            + "(!)?" // optional bang implying NOT
-            + "(.+?)" // reluctant one-or-more characters !LPAREN (see next)
-            + "\\(" // LPAREN
-            + "(" // capturing group 1
-            + "(?:" // noncapturing group for first attribute assignment
+    private static final String ASSIGN_ATTR = "" //
             + "(?:.+?)" // reluctant one or more !=
             + "=" // equals
-            + "(?:.+?)" // reluctant one or more !,
-            + ")?" //
-            + "(?:" // noncapturing group of additional attribute assignments
+            + "(?:.+?)" // reluctant one or more chars
+    ;
+    private static final String PATTERN = "" //
+            + "^" // beginning
+            + "(!)?" // optional bang implying NOT, capturing group 1
+            + "(.+?)" // reluctant one-or-more characters for condition name
+            + "(?:" // open attribute assignments nc group
+            + "\\(" // LPAREN
+            + "(" // capturing group 2, attribute assignments
+            + "(?:" // open nc group ASSIGN_ATTR 1
+            + ASSIGN_ATTR //
+            + ")" // end nc group ASSIGN_ATTR 1
+            + "(?:" // open nc group ASSIGN_ATTR 2..N
             + "," // delimiting comma
-            + "(?:.+?)" // noncapturing reluctant 1 or more !=
-            + "=" // equals
-            + "(?:.+?)" // noncapturing reluctant 1 or more
-            + ")*" // 0 or more additional attributes
-            + "?" // 0 or 1 sets of attributes
-            + ")" // end capturing group 1
+            + ASSIGN_ATTR //
+            + ")*" // 0..N occurrences
+            + ")" // end nc group ASSIGN_ATTR 2..N
             + "\\)" // RPAREN
+            + ")" // end attribute assignments nc group
             + "$" // EOF
     ;
 
