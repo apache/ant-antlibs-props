@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<project xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props" default="antunit">
+
+  <typedef name="logical-ops" classname="org.apache.ant.props.LogicalOperationEvaluator" />
+  <logical-ops id="logical-ops" />
+
+  <propertyhelper>
+    <delegate refid="logical-ops" />
+    <props:nested />
+  </propertyhelper>
+
+  <target name="antunit">
+    <antunit xmlns="antlib:org.apache.ant.antunit">
+      <plainlistener />
+      <file file="${ant.file}" xmlns="antlib:org.apache.tools.ant" />
+    </antunit>
+  </target>
+
+  <target name="test-amp">
+    <au:assertTrue>
+      <istrue value="${true &amp; true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${false &amp; true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${false &amp; false}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true &amp; false}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-plus">
+    <au:assertTrue>
+      <istrue value="${true + true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${true + false}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${false + false}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${false + true}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-xor">
+    <au:assertTrue>
+      <istrue value="${true ^ false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${false ^ true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${true ^ true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${false ^ false}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-or">
+    <au:assertTrue>
+      <istrue value="${true | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true | true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${false | true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${false | false}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-multi-amp">
+    <au:assertTrue>
+      <istrue value="${true &amp; true &amp; true &amp; true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${false &amp; true &amp; true &amp; true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true &amp; false &amp; true &amp; true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true &amp; true &amp; false &amp; true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true &amp; true &amp; true &amp; false}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-multi-plus">
+    <au:assertTrue>
+      <istrue value="${true + true + true + true}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${false + true + true + true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true + false + true + true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true + true + false + true}" />
+    </au:assertFalse>
+    <au:assertFalse>
+      <istrue value="${true + true + true + false}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-multi-xor">
+    <au:assertFalse>
+      <!-- true ^ false == true, ^ true == false, ^ false == false -->
+      <istrue value="${true ^ false ^ true ^ false}" />
+    </au:assertFalse>
+    <au:assertTrue>
+      <!-- true ^ false == true, ^ false == true, ^ false == true -->
+      <istrue value="${true ^ false ^ false ^ false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <!-- false ^ true == true, ^ false == true, ^ false == true -->
+      <istrue value="${false ^ true ^ false ^ false}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${false ^ false ^ false ^ false}" />
+    </au:assertFalse>
+    <au:assertTrue>
+      <istrue value="${false ^ false ^ false ^ true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true ^ false ^ true ^ true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true ^ true ^ true ^ true ^ true}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="test-multi-or">
+    <au:assertTrue>
+      <istrue value="${false | true | false | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true | false | false | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${false | false | false | true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${false | false | true | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true | false | true | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true | true | true | false}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true | true | true | false}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="test-precedence">
+    <au:assertTrue>
+      <istrue value="${true | false + true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${true + false | true}" />
+    </au:assertTrue>
+    <au:assertTrue>
+      <istrue value="${false + true ^ true | true + false}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="test-negation">
+    <au:assertTrue>
+      <istrue value="${!false}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${!true}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="test-nested-negation">
+    <propertyhelper>
+      <props:stringops />
+    </propertyhelper>
+    <au:assertTrue>
+      <istrue value="${!${foo:-false}}" />
+    </au:assertTrue>
+    <au:assertFalse>
+      <istrue value="${!${foo:-true}}" />
+    </au:assertFalse>
+  </target>
+
+</project>
