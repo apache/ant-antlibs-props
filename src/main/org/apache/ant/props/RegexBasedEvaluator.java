@@ -34,6 +34,7 @@ public abstract class RegexBasedEvaluator implements PropertyHelper.PropertyEval
     private String pattern;
 
     private RegularExpression regularExpression;
+    private int options = Regexp.MATCH_DEFAULT;
 
     /**
      * Create a new RegexBasedEvaluator.
@@ -49,6 +50,14 @@ public abstract class RegexBasedEvaluator implements PropertyHelper.PropertyEval
     protected RegexBasedEvaluator(String pattern) {
         setPattern(pattern);
     }
+    
+    /**
+     * Add a matcher option.
+     * @param option to add
+     */
+    protected void addOption(int option) {
+        options |= option;
+    }
 
     /** {@inheritDoc} */
     public Object evaluate(String propertyName, PropertyHelper propertyHelper) {
@@ -58,7 +67,7 @@ public abstract class RegexBasedEvaluator implements PropertyHelper.PropertyEval
         }
         Regexp regexp = getRegularExpression().getRegexp(propertyHelper.getProject());
         if (regexp.matches(propertyName)) {
-            List groups = regexp.getGroups(propertyName, Regexp.MATCH_DEFAULT);
+            List groups = regexp.getGroups(propertyName, options);
             String[] s = (String[]) groups.toArray(new String[groups.size()]);
             return evaluate(s, propertyHelper);
         }
