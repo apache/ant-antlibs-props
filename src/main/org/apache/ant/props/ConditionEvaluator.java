@@ -49,7 +49,6 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
             + "^" // beginning
             + "(!)?" // optional bang implying NOT, capturing group 1
             + "(.+?)" // reluctant one-or-more characters for condition name
-            + "(?:" // open attribute assignments nc group
             + "\\(" // LPAREN
             + "(" // capturing group 2, attribute assignments
             + "(?:" // open nc group ASSIGN_ATTR 1
@@ -61,7 +60,6 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
             + ")*" // 0..N occurrences
             + ")" // end nc group ASSIGN_ATTR 2..N
             + "\\)" // RPAREN
-            + ")" // end attribute assignments nc group
             + "$" // EOF
     ;
 
