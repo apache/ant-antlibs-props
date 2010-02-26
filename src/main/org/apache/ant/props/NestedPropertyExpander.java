@@ -24,9 +24,11 @@ import org.apache.tools.ant.property.ParseNextProperty;
 import org.apache.tools.ant.property.PropertyExpander;
 
 /**
- * Default expander.
+ * By popular demand:  Nested property expander.
  */
 public class NestedPropertyExpander implements PropertyExpander {
+    private static final NestedPropertyExpander INSTANCE = new NestedPropertyExpander();
+
     /**
      * Parse the next property name.
      * @param value the String to parse.
@@ -34,12 +36,12 @@ public class NestedPropertyExpander implements PropertyExpander {
      * @param parseNextProperty parse next property
      * @return parsed String if any, else <code>null</code>.
      */
-   public String parsePropertyName(
-       String value, ParsePosition pos, ParseNextProperty parseNextProperty) {
+    public String parsePropertyName(String value, ParsePosition pos,
+            ParseNextProperty parseNextProperty) {
         int start = pos.getIndex();
         if (value.indexOf("${", start) == start) {
-            parseNextProperty.getProject().log(
-                "Attempting nested property processing", Project.MSG_DEBUG);
+            parseNextProperty.getProject().log("Attempting nested property processing",
+                    Project.MSG_DEBUG);
             pos.setIndex(start + 2);
             StringBuffer sb = new StringBuffer();
             for (int c = pos.getIndex(); c < value.length(); c = pos.getIndex()) {
@@ -51,7 +53,8 @@ public class NestedPropertyExpander implements PropertyExpander {
                 if (o != null) {
                     sb.append(o);
                 } else {
-                    // be aware that the parse position may now have changed; update:
+                    // be aware that the parse position may now have changed;
+                    // update:
                     c = pos.getIndex();
                     sb.append(value.charAt(c));
                     pos.setIndex(c + 1);
@@ -60,5 +63,22 @@ public class NestedPropertyExpander implements PropertyExpander {
         }
         pos.setIndex(start);
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(Object obj) {
+        return obj instanceof NestedPropertyExpander && obj.hashCode() == hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode() {
+        if (NestedPropertyExpander.class.equals(getClass())) {
+            return System.identityHashCode(INSTANCE);
+        }
+        throw new UnsupportedOperationException("Get your own hashCode implementation!");
     }
 }
