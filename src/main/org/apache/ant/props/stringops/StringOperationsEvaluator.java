@@ -19,63 +19,26 @@
  */
 package org.apache.ant.props.stringops;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Stack;
-
-import org.apache.tools.ant.PropertyHelper;
-import org.apache.tools.ant.PropertyHelper.PropertyEvaluator;
+import org.apache.ant.props.DelegatingPropertyEvaluator;
 
 /**
  * PropertyEvaluator to apply *nix-style string operations to Ant properties.
  */
-public class StringOperationsEvaluator implements PropertyHelper.PropertyEvaluator {
-    private static final ThreadLocal STACK = new ThreadLocal() {
-        protected Object initialValue() {
-            return new Stack();
-        }
-    };
-
-    private ArrayList delegates = new ArrayList();
-
+public class StringOperationsEvaluator extends DelegatingPropertyEvaluator {
     /**
      * Construct a new StringOperationsEvaluator.
      */
     public StringOperationsEvaluator() {
-        delegates.add(new Substring());
-        delegates.add(new DefaultValue());
-        delegates.add(new SetDefaultValue());
-        delegates.add(new Translate());
-        delegates.add(new RequireProperty());
-        delegates.add(new DeleteFromStartGreedy());
-        delegates.add(new DeleteFromStartReluctant());
-        delegates.add(new DeleteFromEndGreedy());
-        delegates.add(new DeleteFromEndReluctant());
-        delegates.add(new ReplaceOperation());
+        addDelegate(new Substring());
+        addDelegate(new DefaultValue());
+        addDelegate(new SetDefaultValue());
+        addDelegate(new Translate());
+        addDelegate(new RequireProperty());
+        addDelegate(new DeleteFromStartGreedy());
+        addDelegate(new DeleteFromStartReluctant());
+        addDelegate(new DeleteFromEndGreedy());
+        addDelegate(new DeleteFromEndReluctant());
+        addDelegate(new ReplaceOperation());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Object evaluate(String propertyName, PropertyHelper propertyHelper) {
-        Stack stk = (Stack) STACK.get();
-        if (stk.contains(propertyName)) {
-            return null;
-        }
-        stk.push(propertyName);
-        try {
-            for (Iterator iter = delegates.iterator(); iter.hasNext();) {
-                Object value = ((PropertyEvaluator) iter.next()).evaluate(propertyName,
-                        propertyHelper);
-                if (value != null) {
-                    return value;
-                }
-            }
-        } finally {
-            if (stk.pop() != propertyName) {
-                throw new IllegalStateException("stack out of balance");
-            }
-        }
-        return null;
-    }
 }
