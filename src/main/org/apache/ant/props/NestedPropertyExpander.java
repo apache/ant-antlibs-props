@@ -69,7 +69,7 @@ public class NestedPropertyExpander implements PropertyExpander {
      * {@inheritDoc}
      */
     public boolean equals(Object obj) {
-        return obj instanceof NestedPropertyExpander && obj.hashCode() == hashCode();
+        return obj == this || obj instanceof NestedPropertyExpander && obj.hashCode() == hashCode();
     }
 
     /**
