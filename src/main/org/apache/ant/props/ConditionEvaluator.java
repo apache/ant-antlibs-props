@@ -33,8 +33,8 @@ import org.apache.tools.ant.taskdefs.condition.Condition;
  * instance matching the condition's outcome.
  *
  * <p>Default syntax is
- * <code><em>condition</em>(<em>attribute</em>=<em>value</em>)</code>,
- * for example <code>os(family=unix)</code>.
+ * <code>[!]<em>condition</em>(<em>attribute</em>=<em>value</em>)</code>,
+ * for example <code>os(family=unix)</code> or <code>!os(family=unix)</code>.
  */
 public class ConditionEvaluator extends RegexBasedEvaluator {
     private static final Pattern COMMA = Pattern.compile(",");
