@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<project xmlns:au="antlib:org.apache.ant.antunit"
+         xmlns:props="antlib:org.apache.ant.props" default="antunit">
+
+  <propertyhelper>
+    <props:conditions />
+    <props:nested />
+  </propertyhelper>
+
+  <target name="if-available"
+          if="${${available(classname=org.apache.ant.props.ConditionsEvaluator)} | false}">
+    <property name="testAvailable.pass" value="true" />
+  </target>
+
+  <target name="unless-available"
+          unless="${${available(classname=org.apache.ant.props.ConditionsEvaluator)} &amp; true}">
+    <property name="testAvailable.fail" value="true" />
+  </target>
+
+  <target name="testAvailable" depends="if-available,unless-available">
+    <propertyhelper>
+      <props:stringops />
+    </propertyhelper>
+    <au:assertTrue>
+      <istrue value="${${testAvailable.pass:-false} &amp; !${testAvailable.fail:-false}}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="set-prop">
+    <property name="foo" value="bar" />
+  </target>
+
+  <target name="if-equals" if="${${equals(arg1=bar,arg2=${foo})} | false}">
+    <property name="testTrueEquals.pass" value="true" />
+  </target>
+
+  <target name="unless-equals"
+          unless="${${equals(arg1=bar,arg2=${foo})} &amp; true}">
+    <property name="testFalseEquals.pass" value="true" />
+  </target>
+
+  <target name="testTrueEquals" depends="set-prop,if-equals,unless-equals">
+    <au:assertTrue>
+      <istrue value="${testTrueEquals.pass}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testFalseEquals" depends="if-equals,unless-equals"
+          description="Pass is inconclusive">
+    <au:assertTrue>
+      <istrue value="${testFalseEquals.pass}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testEvalToTextFalse">
+    <au:assertTrue>
+      <!-- equals takes objects; embedding values in () forces string conversion -->
+      <equals arg1="(false)"
+              arg2="(${${equals(arg1=bar,arg2=${foo})} &amp; true})" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testEvalToTextTrue" depends="set-prop">
+    <au:assertTrue>
+      <!-- equals takes objects; embedding values in () forces string conversion -->
+      <equals arg1="(true)"
+              arg2="(${${equals(arg1=bar,arg2=${foo})} | false})" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testIsTrue" depends="set-prop">
+    <au:assertTrue>
+      <istrue value="${${equals(arg1=bar,arg2=${foo})} | false}" />
+    </au:assertTrue>
+  </target>
+
+  <target name="testNotIsTrue" description="Pass is inconclusive">
+    <au:assertFalse>
+      <istrue value="${${equals(arg1=bar,arg2=${foo})} &amp; true}" />
+    </au:assertFalse>
+  </target>
+
+  <target name="antunit">
+    <antunit xmlns="antlib:org.apache.ant.antunit">
+      <plainlistener />
+      <file file="${ant.file}" xmlns="antlib:org.apache.tools.ant" />
+    </antunit>
+  </target>
+
+  <target name="testNegation">
+    <property name="foo" value="false" />
+    <au:assertTrue>
+      <istrue value="${!${istrue(value=${foo})}}" />
+    </au:assertTrue>
+  </target>
+
+</project>

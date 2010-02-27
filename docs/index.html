@@ -129,6 +129,14 @@
             setting the given attibute values and evaluates to either
             Boolean.TRUE or Boolean.FALSE.  Usage looks
             like <em>${os(family=unix)}</em> / <em>${!os(family=unix)}</em>.
+            Additionally, logical operations are supported.
+            In order of precedence, these are !, &, ^, and |, with +
+            being a secondary alias for & since & is a special character
+            to the XML format. When you want to combine logical operations
+            with typed Ant conditions, the typed conditions should be
+            specified as nested properties and the <a href="#nested">nested
+            evaluator</a> should be included with your active
+            PropertyHelper delegates.
             This is probably most useful together with the
             <code>if</code>/<code>unless</code> attributes of tasks or targets.
         </td>

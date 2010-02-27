@@ -22,5 +22,5 @@ under the License.
   <typedef name="stringops" classname="org.apache.ant.props.stringops.StringOperationsEvaluator" />
   <typedef name="types" classname="org.apache.ant.props.ComponentTypeEvaluator" />
   <typedef name="encodeURL" classname="org.apache.ant.props.EncodeURLEvaluator" />
-  <typedef name="conditions" classname="org.apache.ant.props.ConditionEvaluator" />
+  <typedef name="conditions" classname="org.apache.ant.props.ConditionsEvaluator" />
 </antlib>

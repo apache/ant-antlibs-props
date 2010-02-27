@@ -36,7 +36,7 @@ import org.apache.tools.ant.taskdefs.condition.Condition;
  * <code>[!]<em>condition</em>(<em>attribute</em>=<em>value</em>)</code>,
  * for example <code>os(family=unix)</code> or <code>!os(family=unix)</code>.
  */
-public class ConditionEvaluator extends RegexBasedEvaluator {
+public class ConditionTypeEvaluator extends RegexBasedEvaluator {
     private static final Pattern COMMA = Pattern.compile(",");
     private static final Pattern EQ = Pattern.compile("=");
 
@@ -64,9 +64,9 @@ public class ConditionEvaluator extends RegexBasedEvaluator {
     ;
 
     /**
-     * Create a new ConditionEvaluator instance.
+     * Create a new ConditionTypeEvaluator instance.
      */
-    public ConditionEvaluator() {
+    public ConditionTypeEvaluator() {
         super(PATTERN);
     }
 
