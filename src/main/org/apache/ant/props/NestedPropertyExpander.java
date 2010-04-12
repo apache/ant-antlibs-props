@@ -39,7 +39,8 @@ public class NestedPropertyExpander implements PropertyExpander {
     public String parsePropertyName(String value, ParsePosition pos,
             ParseNextProperty parseNextProperty) {
         int start = pos.getIndex();
-        if (value.indexOf("${", start) == start) {
+        if (value.length() - start >= 3
+            && '$' == value.charAt(start) && '{' == value.charAt(start + 1)) {
             parseNextProperty.getProject().log("Attempting nested property processing",
                     Project.MSG_DEBUG);
             pos.setIndex(start + 2);
