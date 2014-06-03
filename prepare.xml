@@ -32,7 +32,7 @@ The original of this snippet is maintained in the antlib-common project.
 
   <property name="antlib.common.git" value="https://git-wip-us.apache.org/repos/asf/ant-antlibs-common.git"/>
   <property name="git" value="git"/>
-  
+
   <available property="common.present" file="common" type="dir"/>
 
   <echo message="cloning antlib-common" unless:set="common.present"/>
@@ -46,7 +46,13 @@ The original of this snippet is maintained in the antlib-common project.
   <exec executable="${git}" dir="common" taskname="git" if:set="common.present">
     <arg value="pull"/>
   </exec>
-  
+
+  <echo>updating prepare.xml</echo>
   <copy file="common/prepare.xml" tofile="prepare.xml"/>
-  
+
+  <echo>updating AntUnit</echo>
+  <property name="antunit.version" value="1.3"/>
+  <property name="antunit.url" value="http://repo1.maven.org/maven2/org/apache/ant/ant-antunit/${antunit.version}/ant-antunit-${antunit.version}.jar"/>
+  <get src="${antunit.url}" dest="ant-antunit.jar" usetimestamp="true"/>
+
 </project>
