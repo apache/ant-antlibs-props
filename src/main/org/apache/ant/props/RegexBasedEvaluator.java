@@ -77,7 +77,7 @@ public abstract class RegexBasedEvaluator implements PropertyHelper.PropertyEval
     /**
      * Get the regular expression object to use.
      * 
-     * @return
+     * @return the regexp
      */
     protected synchronized RegularExpression getRegularExpression() {
         if (regularExpression == null) {

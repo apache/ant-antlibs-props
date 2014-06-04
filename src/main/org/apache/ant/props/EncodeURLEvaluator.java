@@ -42,7 +42,7 @@ public class EncodeURLEvaluator extends StaticPrefixedEvaluator {
     /**
      * {@inheritDoc}
      * 
-     * @see org.apache.ant.props.PrefixedEvaluator#evaluatePrefixed(java.lang.String,
+     * @see org.apache.ant.props.PrefixedEvaluator#evaluate(java.lang.String,
      *      java.lang.String, org.apache.tools.ant.PropertyHelper)
      */
     protected Object evaluate(String property, String prefix, PropertyHelper propertyHelper) {
