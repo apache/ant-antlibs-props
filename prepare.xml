@@ -78,7 +78,7 @@ The original of this snippet is maintained in the antlib-common project.
           description="Bootstraps the preparation script by cloning the antlib-common and updating this script from there."
   >
     <echo>Bootstrap done. Next step:</echo> 
-    <echo>  ant -f ${ant.file.name} prepare</echo>
+    <echo>  ant -f prepare.xml prepare</echo>
   </target>
           
   <target name="prepare" 
