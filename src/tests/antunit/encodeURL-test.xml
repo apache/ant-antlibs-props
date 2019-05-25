@@ -28,18 +28,18 @@
 
   <target name="testBasic" depends="setUp">
     <au:assertTrue>
-      <equals arg1="${encodeURL:http://ant.apache.org}" arg2="http://ant.apache.org" />
+      <equals arg1="${encodeURL:https://ant.apache.org}" arg2="https://ant.apache.org" />
     </au:assertTrue>
     <au:assertTrue>
-      <equals arg1="${encodeURL:http://ant.apache.org/foo bar}"
-              arg2="http://ant.apache.org/foo%20bar" />
+      <equals arg1="${encodeURL:https://ant.apache.org/foo bar}"
+              arg2="https://ant.apache.org/foo%20bar" />
     </au:assertTrue>
   </target>
 
   <target name="testDelimiter" depends="setUp">
     <au:assertTrue>
-      <equals arg1="${encodeURL,http://ant.apache.org/foo bar?baz}"
-              arg2="http://ant.apache.org/foo%20bar?baz" />
+      <equals arg1="${encodeURL,https://ant.apache.org/foo bar?baz}"
+              arg2="https://ant.apache.org/foo%20bar?baz" />
     </au:assertTrue>
   </target>
 
