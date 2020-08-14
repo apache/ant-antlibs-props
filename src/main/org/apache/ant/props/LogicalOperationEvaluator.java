@@ -23,7 +23,7 @@ import org.apache.tools.ant.PropertyHelper.PropertyEvaluator;
 
 /**
  * {@link PropertyEvaluator} that processes combinations of <code>!</code>,
- * <code>&</code> (<code>+</code> is also accepted for XML ease-of-use),
+ * <code>&amp;</code> (<code>+</code> is also accepted for XML ease-of-use),
  * <code>^</code> (XOR), and <code>|</code>, in descending priority.
  * Probably only useful when used with {@link NestedPropertyExpander} which, when
  * taken in conjunction with {@link ConditionTypeEvaluator}, will resolve nested
