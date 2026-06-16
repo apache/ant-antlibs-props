@@ -53,8 +53,8 @@
               e:classifier="ivy"/>
   </publications>
   <dependencies>
-    <dependency org="org.apache.ant" name="ant" rev="1.10.17" conf="provided->default"/>
-    <dependency org="org.apache.ant" name="ant-launcher" rev="1.10.17" conf="provided->default"/>
+    <dependency org="org.apache.ant" name="ant" rev="1.8.0" conf="provided->default"/>
+    <dependency org="org.apache.ant" name="ant-launcher" rev="1.8.0" conf="provided->default"/>
     <dependency org="org.apache.ant" name="ant-antunit" rev="1.4.1" conf="test->default"/>
   </dependencies>
 </ivy-module>
