@@ -52,3 +52,12 @@ table th {
 pre {
    background-color: efefef;
 }
+
+.copyright {
+    font-family: arial,helvetica,sanserif;
+    font-size: 90%;
+    clear: both;
+    text-align: center;
+    margin: 0px;
+    border-top: thin solid #4C6C8F;
+}
