@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements. See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version
+   2.0 (the "License"); you may not use this file except in compliance
+   with the License. You may obtain a copy of the License at
+
+   https://www.apache.org/licenses/LICENSE-2.0 Unless required by
+   applicable law or agreed to in writing, software distributed under the
+   License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+   CONDITIONS OF ANY KIND, either express or implied. See the License for
+   the specific language governing permissions and limitations under the
+   License.
+  -->
+<!--
+   This POM has been created manually by the Ant Development Team. Please
+   contact us if you are not satisfied with the data contained in this
+   POM . URL : https://ant.apache.org
+  -->
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.ant</groupId>
+  <artifactId>ant-props</artifactId>
+  <packaging>jar</packaging>
+  <version>${artifact.version}</version>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>https://www.apache.org/</url>
+  </organization>
+
+  <!--
+     Test doesn't work from maven, you have to fight with tricky classpath
+     issue to solve that See https://markmail.org/thread/6giwzqproxidcwyc
+     And https://markmail.org/thread/5bbknx6hm7liqvi6 (until it is solved, I
+     comment test setting)
+    -->
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+
+
+  <build>
+    <sourceDirectory>src/main</sourceDirectory>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant-antunit</artifactId>
+      <version>1.4.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
