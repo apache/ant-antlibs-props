@@ -51,6 +51,10 @@
               e:classifier="ivy"/>
     <artifact name="${artifact.name}" type="ivy.asc" ext="xml.asc"
               e:classifier="ivy"/>
+    <artifact name="${artifact.name}" type="cyclonedx.xml" ext="cdx.xml"/>
+    <artifact name="${artifact.name}" type="cyclonedx.xml.asc" ext="cdx.xml.asc"/>
+    <artifact name="${artifact.name}" type="cyclonedx.json" ext="cdx.json"/>
+    <artifact name="${artifact.name}" type="cyclonedx.json.asc" ext="cdx.json.asc"/>
   </publications>
   <dependencies>
     <dependency org="org.apache.ant" name="ant" rev="1.8.0" conf="provided->default"/>
