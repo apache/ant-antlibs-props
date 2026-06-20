@@ -27,6 +27,34 @@ under the License.
   <target name="after-src-dist" depends="src-sboms"/>
   <target name="after-bin-dist" depends="bin-sboms"/>
 
+  <target name="antunit-test" depends="ready-to-test-with-antunit,resolve"
+    unless="skip-antunit">
+    <condition property="antunit.includes" value="${antunit.testcase}"
+               else="**/test.xml,**/*-test.xml">
+      <isset property="antunit.testcase" />
+    </condition>
+
+    <property name="antunit.excludes" value="" />
+
+    <mkdir dir="${antunit.report.dir}" />
+    <au:antunit xmlns:au="antlib:org.apache.ant.antunit"
+      failOnError="false"
+      errorProperty="antunit.tests.failed"
+      >
+      <fileset dir="${src.antunit}" includes="${antunit.includes}"
+               excludes="${antunit.excludes}" />
+
+      <au:xmllistener todir="${antunit.report.dir}" />
+      <au:plainlistener/>
+      <referenceset>
+        <reference refid="classpath.test"/>
+      </referenceset>
+      <propertyset>
+        <propertyref name="antlib.location"/>
+      </propertyset>
+    </au:antunit>
+  </target>
+
   <import file="common/build.xml"/>
   <import file="cyclonedx.xml"/>
 </project>
