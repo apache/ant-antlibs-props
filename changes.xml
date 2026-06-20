@@ -39,6 +39,9 @@ under the License.
       <title>Apache Props Ant Library</title>
     </properties>
 
-    <release version="SVN trunk" date="unpublished">
+    <release version="1.1.0" date="unpublished">
+    </release>
+
+    <release version="1.0.0" date="2026-06-27">
     </release>
   </document>
